@@ -1,0 +1,10 @@
+{
+    "id": "spamreporter",
+    "name": "Spam Reporter Module",
+    "description": "This module allows to report posts as spam.",
+    "keywords": ["spam", "reporter"],
+    "version": "0.9.3",
+    "humhub": {
+        "minVersion": "0.8.0"
+    },
+}
