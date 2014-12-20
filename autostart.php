@@ -5,11 +5,12 @@ Yii::app()->moduleManager->register(array(
     'class' => 'application.modules.spamreporter.SpamReporterModule',
     'import' => array(
         'application.modules.spamreporter.*',
+		'application.modules.spamreporter.models.*',
+		'application.modules.spamreporter.notifications.*',
     ),
     // Events to Catch 
     'events' => array(
-		//array('class' => 'WallEntryControlsWidget', 'event' => 'onInit', 'callback' => array('SpamReporterModule', 'onWallEntryControlsInit')),
-        //array('class' => 'DashboardSidebarWidget', 'event' => 'onInit', 'callback' => array('BirthdayModule', 'onSidebarInit')),
+		array('class' => 'WallEntryControlsWidget', 'event' => 'onInit', 'callback' => array('SpamReporterModule', 'onWallEntryControlsInit')),
     ),
 ));
 ?>
