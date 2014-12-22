@@ -1,9 +1,12 @@
 <!-- Link in menu for reporting the post -->
+
 <li><a href="#"
 	id="reportLinkPost_modal_postreport_<?php echo $object->id ?>"
 	data-toggle="modal"
 	data-target="#submitSpamReport_<?php echo $object->id ?>"> <?php echo '<i class="fa fa-exclamation-circle"></i> ' . Yii::t('SpamReporter.widgets_views_reportSpamLink', 'Report post'); ?>
-</a> <!-- Modal with reasons of report -->
+	</a> 
+
+<!-- Modal with reasons of report -->
 	<div class="modal" id="submitSpamReport_<?php echo $object->id;?>"
 		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 		aria-hidden="true">

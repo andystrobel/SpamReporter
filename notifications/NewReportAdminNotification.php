@@ -20,6 +20,7 @@ class NewReportAdminNotification extends Notification
 	{
 		//if post belongs to the space report to space admin
 		if ($report->content->container instanceof Space) {
+
 			$admins = SpaceMembership::model() -> findAll('admin_role = 1 and space_id = '.$report->content->space_id);
 		}
 		
@@ -56,3 +57,4 @@ class NewReportAdminNotification extends Notification
 }
 
 ?>
+
