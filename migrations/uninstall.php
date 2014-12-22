@@ -4,8 +4,8 @@ class uninstall extends ZDbMigration {
 
     public function up() {
 
-        $this->dropTable('report');
-            
+        $this -> dropTable('report');
+        $this -> delete('notification', 'source_object_model = Report');
     }
 
     public function down() {

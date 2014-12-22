@@ -20,45 +20,37 @@ class NewReportAdminNotification extends Notification
 	{
 		//if post belongs to the space report to space admin
 		if ($report->content->container instanceof Space) {
+			$admins = SpaceMembership::model() -> findAll('admin_role = 1');
 
-			$notification = new Notification();
-			$notification->class = "NewReportAdminNotification";
+			//if post is profile post report to super admins
+			if($report->content->container instanceof User){
+				$admins = User::model ()->findAll('super_admin = 1');
+			}
 
-			$notification->user_id = $report->content->getContainer()-> created_by; //space admin
-			$notification->space_id = $report->content->space_id;
-
-			$notification->source_object_model = "Report";
-			$notification->source_object_id = $report->id;
-
-			$notification->target_object_model = $report->object_model;
-			$notification->target_object_id = $report->object_id;
-
-			$notification->save();
-		}
-
-		//if profile post report post to all super admins.
-		if($report->content->container instanceof User){
-			$users = User::model ()->findAll('super_admin = 1');
-			foreach($users as $super_admin){
-
+			foreach ($admins  as $admin) {
+					
 				$notification = new Notification();
 				$notification->class = "NewReportAdminNotification";
-
-				$notification -> user_id = $super_admin->id;
+					
+				if ($report->content->container instanceof Space) {
+					$notification->user_id = $admin -> user_id;
+					$notification->space_id = $report->content->space_id;
+				}
+					
+				if($report->content->container instanceof User)
+					$notification->user_id = $admin -> id;
 
 				$notification->source_object_model = "Report";
 				$notification->source_object_id = $report->id;
-
+					
 				$notification->target_object_model = $report->object_model;
 				$notification->target_object_id = $report->object_id;
-
+					
 				$notification->save();
 			}
+				
 		}
 
-		 
 	}
 
-}
-
-?>
+	?>

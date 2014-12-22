@@ -7,7 +7,7 @@
  */
 class ReportReasonForm extends CFormModel {
 
-	public $post_id;
+	public $object_id;
     public $reason;
     
     /**
@@ -24,7 +24,7 @@ class ReportReasonForm extends CFormModel {
      */
     public function rules() {
         return array(
-            array('reason, post_id', 'required'),
+            array('reason, object_id', 'required'),
         );
     }
 
