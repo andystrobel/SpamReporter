@@ -22,7 +22,7 @@ class NewReportAdminNotification extends Notification
 		if ($report->content->container instanceof Space) {
 			$admins = SpaceMembership::model() -> findAll('admin_role = 1 and space_id = '.$report->content->space_id);
 		}
-
+		
 		//if post is profile post report to super admins
 		if($report->content->container instanceof User){
 			$admins = User::model ()->findAll('super_admin = 1');

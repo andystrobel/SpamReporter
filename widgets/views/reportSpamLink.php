@@ -44,7 +44,7 @@
 
 					<?php echo HHtml::ajaxSubmitButton(Yii::t('SpamReporter.widgets_views_reportSpamLink', 'Submit'), $this->createUrl("//spamreporter/spamreporter/report", array()), array( //array('model' => $model, 'id' => $id)), array(
 							'type' => 'POST',
-							'success' => 'function(data) {data = JSON.parse(data); if(data.success) $("#reportLinkPost_modal_postreport_'.$object->id.'").hide();}',
+							'success' => 'function(data) {data = JSON.parse(data); if(data.success) $("#reportLinkPost_modal_postreport_'. $object->id .'").hide();}',
 					), array('class' => 'btn btn-primary', 'data-dismiss' => "modal", 'disabled' => 'disabled'));
 					?>
 				</div>
