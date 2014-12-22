@@ -16,48 +16,85 @@
  */
 class Report extends HActiveRecordContentAddon {
 
-    /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return Report the static model class
-     */
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
-    }
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return Report the static model class
+	 */
+	public static function model($className = __CLASS__) {
+		return parent::model($className);
+	}
 
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName() {
-        return 'report';
-    }
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName() {
+		return 'report';
+	}
 
-    /**
-     * @return array validation rules for model attributes.
-     */
-    public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
-        return array(
-            array('post_id, reason, created_by', 'required'),
-            array('post_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
-            array('created_at', 'length', 'max' => 45),
-            array('updated_at', 'safe') 
-        );
-    }
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules() {
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return array(
+				array('object_id, reason, created_by', 'required'),
+				array('object_id, created_by, updated_by', 'numerical', 'integerOnly' => true),
+				array('created_at', 'length', 'max' => 45),
+				array('updated_at', 'safe')
+		);
+	}
 
 
-    protected function afterSave() {
+	protected function afterSave() {
 
-        // Send Notifications
-    	NewReportNotification::fire($this);
-    	NewReportAdminNotification::fire($this);
-    	
-    }
-    
-    public function getReason() {
-    	return $this -> reason;
-    }
+		// Send Notifications
+		NewReportNotification::fire($this);
+		NewReportAdminNotification::fire($this);
+		 
+	}
 
+	public function getReason() {
+		return $this -> reason;
+	}
+
+
+	/**
+	 * Checks if the given or current user can report post with given id.
+	 *
+	 * @param int postId
+	 */
+	public static function canReportPost($postId, $userId = "")
+	{
+
+		
+		$post = Post::model() -> findByPk($postId);
+		if(!$post)
+			return false;
+
+		if ($userId == "")
+			$user = Yii::app()->user;
+		else
+			$user = User::model() -> findByPk($userId);
+
+		 
+		if ($user -> isAdmin())
+			return false;
+		 
+		if ($post -> created_by == $user -> id)
+			return false;
+
+		if ($post -> content -> getContainer() instanceof Space && ($post -> content -> getContainer() -> isAdmin ($userId) || $post-> content -> getContainer() -> isAdmin($post -> created_by)))
+			return false;
+
+		if (Report::model() -> exists('object_model = "Post" and object_id = '.$post->id.' and created_by = '.$user-> id) )
+			return false;
+		 
+		if(User::model() -> exists('id = '.$post -> created_by.' and super_admin = 1'))
+			return false;
+		 
+		return true;
+	}
 
 }

@@ -1,9 +1,9 @@
-<li><a id="reportLinkPost_modal_postreport_<?php echo $object->id?>"
-	href="#" data-toggle="modal"
-	data-target="#submitSpamReport_<?php echo $object->id;?>"> <?php echo '<i class="fa fa-exclamation-circle"></i> ' . Yii::t('SpamReporter.widgets_views_reportSpamLink', 'Report post'); ?>
-</a>
-
-
+<!-- Link in menu for reporting the post -->
+<li><a href="#"
+	id="reportLinkPost_modal_postreport_<?php echo $object->id ?>"
+	data-toggle="modal"
+	data-target="#submitSpamReport_<?php echo $object->id ?>"> <?php echo '<i class="fa fa-exclamation-circle"></i> ' . Yii::t('SpamReporter.widgets_views_reportSpamLink', 'Report post'); ?>
+</a> <!-- Modal with reasons of report -->
 	<div class="modal" id="submitSpamReport_<?php echo $object->id;?>"
 		tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 		aria-hidden="true">
@@ -25,7 +25,7 @@
 				$form = $this->beginWidget('HActiveForm', array(
 			            'id' => 'report-post-form',
 			        ));?>
-				<?php echo $form->hiddenField($model,'post_id',array('value'=> $object -> id));?>
+				<?php echo $form->hiddenField($model,'object_id',array('value'=> $object -> id));?>
 				<div class="modal-body text-left">
 
 
@@ -44,7 +44,7 @@
 
 					<?php echo HHtml::ajaxSubmitButton(Yii::t('SpamReporter.widgets_views_reportSpamLink', 'Submit'), $this->createUrl("//spamreporter/spamreporter/report", array()), array( //array('model' => $model, 'id' => $id)), array(
 							'type' => 'POST',
-							'success' => 'function(data) {var data = JSON.parse(data); if(data.success) $("#reportLinkPost_modal_postreport_'.$object->id.'").hide();}',
+							'success' => 'function(data) {data = JSON.parse(data); if(data.success) $("#reportLinkPost_modal_postreport_'.$object->id.'").hide();}',
 					), array('class' => 'btn btn-primary', 'data-dismiss' => "modal", 'disabled' => 'disabled'));
 					?>
 				</div>
@@ -71,4 +71,5 @@
   
         });
     });
+
 </script>

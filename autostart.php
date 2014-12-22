@@ -6,6 +6,7 @@ Yii::app()->moduleManager->register(array(
     'import' => array(
         'application.modules.spamreporter.*',
 		'application.modules.spamreporter.models.*',
+		'application.modules.spamreporter.forms.*',
 		'application.modules.spamreporter.notifications.*',
     ),
     // Events to Catch 

@@ -37,15 +37,15 @@ class SpamReporterController extends Controller {
 
 	/**
 	 *
-     * Handles AJAX Post Request to submit new Report
+	 * Handles AJAX Post Request to submit new Report
 	 */
 	public function actionReport() {
 
+
 		$this->forcePostRequest();
-		 
+			
 		$json = array();
 		$json['success'] = false;
-		Yii::import('spamreporter.forms.*');
 
 		$form = new ReportReasonForm();
 
@@ -53,15 +53,15 @@ class SpamReporterController extends Controller {
 			$_POST['ReportReasonForm'] = Yii::app()->input->stripClean($_POST['ReportReasonForm']);
 			$form->attributes = $_POST['ReportReasonForm'];
 
-			if ($form->validate()) {
-				 
+			if ($form->validate() && Report::canReportPost($form -> object_id)) {
+					
 				$report = new Report();
 				$report -> created_by = Yii::app()-> user-> id;
 				$report -> reason = $form ->reason;
 				$report -> object_model = 'Post';
-				$report -> object_id = $form->post_id;
+				$report -> object_id = $form->object_id;
 				$report->save();
-				//action to stop displaying
+
 				$json['success'] = true;
 			}
 		}
